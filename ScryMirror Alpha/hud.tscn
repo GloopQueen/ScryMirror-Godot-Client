@@ -1,0 +1,207 @@
+[gd_scene load_steps=8 format=3 uid="uid://cpywq7senyjme"]
+
+[ext_resource type="Script" path="res://hud.gd" id="1_k64cc"]
+[ext_resource type="FontFile" uid="uid://300orjnaldub" path="res://fonts/Xolonium-Regular.ttf" id="2_2fhp3"]
+[ext_resource type="Texture2D" uid="uid://bhrume80qbbag" path="res://art/incoming.png" id="3_bhbf6"]
+[ext_resource type="Texture2D" uid="uid://t0qv25kqhmol" path="res://art/ScryMirror_Logo.png" id="4_dnixi"]
+[ext_resource type="AudioStream" uid="uid://2g2di7r3npa7" path="res://sounds/plane_ding.ogg" id="5_v52rf"]
+[ext_resource type="FontFile" uid="uid://svibhget44bt" path="res://fonts/AnekDevanagari-VariableFont_wdth,wght.ttf" id="6_fdhaa"]
+
+[sub_resource type="Theme" id="Theme_xbd80"]
+Button/font_sizes/font_size = 28
+Button/fonts/font = ExtResource("6_fdhaa")
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_k64cc")
+
+[node name="ScoreLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -71.0
+offset_top = 3.0
+offset_right = -13.0
+offset_bottom = 54.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_2fhp3")
+theme_override_font_sizes/font_size = 41
+text = "0"
+vertical_alignment = 1
+
+[node name="DamageLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -71.0
+offset_top = 45.0
+offset_right = -13.0
+offset_bottom = 96.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_2fhp3")
+theme_override_font_sizes/font_size = 41
+text = "0"
+vertical_alignment = 1
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 512.0
+offset_top = -58.0
+offset_right = 920.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_2fhp3")
+theme_override_font_sizes/font_size = 50
+text = "Burgus Glurgus"
+
+[node name="StartButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 519.0
+offset_top = 42.0
+offset_right = 656.0
+offset_bottom = 111.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 44
+text = "Starte"
+
+[node name="MessageTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="EpochLabel" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -19.0
+offset_right = 204.0
+offset_bottom = 4.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0.411765, 0.686275, 1)
+theme_override_font_sizes/font_size = 12
+text = "Packet Info Will Appear Here."
+
+[node name="FeedbackFromServerLabel" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -36.0
+offset_right = 413.0
+offset_bottom = -13.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0.411765, 0.686275, 1)
+theme_override_font_sizes/font_size = 12
+text = "Responses From Server Will Appear Here."
+
+[node name="VersionLabel" type="Label" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -185.0
+offset_top = -19.0
+offset_right = -7.0
+offset_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0.410437, 0.685363, 1)
+theme_override_font_sizes/font_size = 12
+text = "Alpha 0.2.2 8/14/24"
+horizontal_alignment = 2
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="WebPoller" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="IncomingActionTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Incoming" type="TextureRect" parent="."]
+visible = false
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 703.0
+offset_bottom = 137.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_bhbf6")
+
+[node name="ScryLogo" type="TextureRect" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -183.0
+offset_top = -47.0
+offset_right = 694.0
+offset_bottom = 87.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_dnixi")
+
+[node name="PlaneDing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_v52rf")
+
+[node name="GrazeStaticLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -190.0
+offset_top = 13.0
+offset_right = -77.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("6_fdhaa")
+theme_override_font_sizes/font_size = 21
+text = "Graze Score :"
+horizontal_alignment = 2
+
+[node name="DamageStaticLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -215.0
+offset_top = 55.0
+offset_right = -77.0
+offset_bottom = 98.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("6_fdhaa")
+theme_override_font_sizes/font_size = 21
+text = "Damage Taken :"
+horizontal_alignment = 2
+
+[node name="ServerConnectButton" type="Button" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.5
+offset_top = -28.5
+offset_right = 100.5
+offset_bottom = 28.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xbd80")
+text = "Connect & Begin"
+
+[node name="HTTPResultsReporter" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
+[connection signal="timeout" from="WebPoller" to="." method="_on_web_poller_timeout"]
+[connection signal="timeout" from="IncomingActionTimer" to="." method="_on_incoming_action_timer_timeout"]
+[connection signal="pressed" from="ServerConnectButton" to="." method="_on_server_connect_button_pressed"]

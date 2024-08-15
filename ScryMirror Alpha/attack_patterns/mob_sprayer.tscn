@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5chhwq1qwadp"]
+
+[ext_resource type="Script" path="res://attack_patterns/mob_sprayer.gd" id="1_rwb0p"]
+[ext_resource type="PackedScene" uid="uid://62cr8txtf2u5" path="res://mob.tscn" id="2_68t2y"]
+
+[node name="mob_sprayer" type="Node"]
+script = ExtResource("1_rwb0p")
+mob_scene = ExtResource("2_68t2y")
+
+[node name="MobDelayTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="MobSpawnSpot" type="Marker2D" parent="."]
+position = Vector2(0, 4)
+
+[connection signal="timeout" from="MobDelayTimer" to="." method="_on_mob_delay_timer_timeout"]

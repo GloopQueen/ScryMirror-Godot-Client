@@ -1,0 +1,109 @@
+[gd_scene load_steps=14 format=3 uid="uid://c1hjc115hog7o"]
+
+[ext_resource type="Script" path="res://avatar.gd" id="1_3mxvh"]
+[ext_resource type="Texture2D" uid="uid://hj5i76e4t604" path="res://art/playerGrey_up1.png" id="1_s35we"]
+[ext_resource type="Texture2D" uid="uid://44sqcmv0b6pk" path="res://art/playerGrey_up2.png" id="2_fyl51"]
+[ext_resource type="Texture2D" uid="uid://cu3rn1m3lg3ls" path="res://art/Graze Ring.png" id="4_me7i4"]
+[ext_resource type="Texture2D" uid="uid://dniwmo02psqge" path="res://art/Graze Ring 50.png" id="5_4wo20"]
+[ext_resource type="Texture2D" uid="uid://ckhvnvdvfwbbg" path="res://art/Graze Ring 75.png" id="6_r4vwk"]
+[ext_resource type="Texture2D" uid="uid://4vfl0c3piqo5" path="res://art/Graze Ring 90.png" id="7_c80ef"]
+[ext_resource type="AudioStream" uid="uid://dyfw6tf54bbqg" path="res://sounds/coconut_ow.ogg" id="8_7cyc8"]
+[ext_resource type="AudioStream" uid="uid://bhm4iyqwxxl5a" path="res://sounds/graze.ogg" id="9_gygtt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8lx66"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_s35we")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_fyl51")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a7m52"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_06a1p"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1uure"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_me7i4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_4wo20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_r4vwk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_c80ef")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"NiceLilFlash",
+"speed": 12.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Avatar" type="CharacterBody2D" groups=["avatar"]]
+script = ExtResource("1_3mxvh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, 10)
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_8lx66")
+frame_progress = 0.288541
+
+[node name="Area2D" type="Area2D" parent="." groups=["avatar"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+scale = Vector2(2.5, 2.5)
+shape = SubResource("CircleShape2D_a7m52")
+
+[node name="InvulnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="FlashingTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="GrazeArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GrazeArea2D"]
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_06a1p")
+debug_color = Color(0.786325, 0.316315, 0.746796, 0.42)
+
+[node name="GrazeRingAnimatedSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_1uure")
+animation = &"NiceLilFlash"
+frame = 4
+frame_progress = 0.692202
+
+[node name="GrazeTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="OuchNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_7cyc8")
+
+[node name="GrazeNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_gygtt")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="InvulnTimer" to="." method="_on_invuln_timer_timeout"]
+[connection signal="timeout" from="FlashingTimer" to="." method="_on_flashing_timer_timeout"]
+[connection signal="body_entered" from="GrazeArea2D" to="." method="_on_graze_area_2d_body_entered"]
+[connection signal="timeout" from="GrazeTimer" to="." method="_on_graze_timer_timeout"]

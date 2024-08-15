@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqm54qvbyc74p"]
+
+[ext_resource type="PackedScene" uid="uid://62cr8txtf2u5" path="res://mob.tscn" id="1_43j2b"]
+[ext_resource type="Script" path="res://attack_patterns/2_straight_shots.gd" id="1_70hkt"]
+
+[node name="2StraightShots" type="Node"]
+script = ExtResource("1_70hkt")
+
+[node name="Mob" parent="." instance=ExtResource("1_43j2b")]
+position = Vector2(234, 6)
+rotation = 1.5708
+linear_velocity = Vector2(0, 100)
+
+[node name="Mob2" parent="." instance=ExtResource("1_43j2b")]
+position = Vector2(84, 4)
+rotation = 1.5708
+linear_velocity = Vector2(0, 260)
+
+[node name="KillSceneTimer" type="Timer" parent="."]
+wait_time = 16.0
+autostart = true
+
+[connection signal="timeout" from="KillSceneTimer" to="." method="_on_kill_scene_timer_timeout"]
