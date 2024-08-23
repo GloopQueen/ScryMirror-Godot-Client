@@ -6,11 +6,13 @@ signal spawn_interaction(num,seconds,is_player_there)
 signal reset_scores
 
 
+
+
 var currrentEpoch = 0
 var currentPage = 0
 var currentSeconds = 0
 var currentAttackId = 0
-
+var isServerPollerBusy = false 
 var scryServerURL
 
 
@@ -69,12 +71,15 @@ func _on_web_poller_timeout():
 	if $WebPoller.wait_time != 4:
 		$WebPoller.wait_time = 4
 	#$HTTPRequest.request_completed.connect(_on_request_completed)
-	$HTTPRequest.request(scryServerURL+"statusjson")
+	if isServerPollerBusy == false:
+		$HTTPRequest.request(scryServerURL+"statusjson")
+		isServerPollerBusy = true
 	# $HTTPRequest.request("https://scry-mirror.vercel.app/api/statusjson") just in case
 
 
 # this is the function that kicks off the hooplah if there's an update
 func _on_request_completed(result, response_code, headers, body):
+	isServerPollerBusy = false
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	var infoString 
 	print(json["currentSeconds"])

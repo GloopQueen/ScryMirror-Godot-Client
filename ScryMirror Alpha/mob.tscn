@@ -40,7 +40,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"glooperball",
-"speed": 7.0
+"speed": 9.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -69,15 +69,19 @@ animations = [{
 radius = 13.0384
 
 [node name="Mob" type="RigidBody2D" groups=["mobs_global"]]
+collision_layer = 3
 collision_mask = 0
 gravity_scale = 0.0
+max_contacts_reported = 1
 script = ExtResource("1_g2gev")
+GrazeValue = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(-15, 0)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_2du6p")
 animation = &"glooperball"
+autoplay = "glooperball"
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["mobs", "mobs_global"]]

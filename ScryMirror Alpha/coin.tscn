@@ -1,0 +1,113 @@
+[gd_scene load_steps=15 format=3 uid="uid://cs0hwbk6716c1"]
+
+[ext_resource type="Script" path="res://coin.gd" id="1_ee5qu"]
+[ext_resource type="Texture2D" uid="uid://3ivsq4r7db2i" path="res://attack_patterns/blackjack_game/art/Coin 1.png" id="2_hluqv"]
+[ext_resource type="Texture2D" uid="uid://3mndk7e8jexo" path="res://attack_patterns/blackjack_game/art/Coin 2.png" id="3_ui2nn"]
+[ext_resource type="Texture2D" uid="uid://bthnweq0i3ubp" path="res://attack_patterns/blackjack_game/art/Coin 3.png" id="4_vtp3j"]
+[ext_resource type="Texture2D" uid="uid://ddjq5ga47muq6" path="res://attack_patterns/blackjack_game/art/Coin 4.png" id="5_3oe7o"]
+[ext_resource type="Texture2D" uid="uid://cp7rc1efd477m" path="res://attack_patterns/blackjack_game/art/Coin 5.png" id="6_2di08"]
+[ext_resource type="Texture2D" uid="uid://bcsvuqicv8ko5" path="res://attack_patterns/blackjack_game/art/Coin 6.png" id="7_qcmwx"]
+[ext_resource type="Texture2D" uid="uid://3a3h3jnagw5m" path="res://attack_patterns/blackjack_game/art/Coin 7.png" id="8_ygb7p"]
+[ext_resource type="Texture2D" uid="uid://bw2ejd4blkwju" path="res://attack_patterns/blackjack_game/art/Coin 8.png" id="9_4y6sh"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fvfkx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_hluqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ui2nn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vtp3j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_3oe7o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_2di08")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_qcmwx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_ygb7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_4y6sh")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_pry7d"]
+resource_name = "coin_bounce"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CoinAnim:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -50), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yp7x0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CoinAnim:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ny46f"]
+_data = {
+"RESET": SubResource("Animation_yp7x0"),
+"coin_bounce": SubResource("Animation_pry7d")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7w6c1"]
+size = Vector2(36, 44)
+
+[node name="Coin" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_ee5qu")
+
+[node name="CoinAnim" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_fvfkx")
+autoplay = "default"
+frame = 1
+
+[node name="CoinBounce" type="AnimationPlayer" parent="CoinAnim"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_ny46f")
+}
+autoplay = "coin_bounce"
+
+[node name="CoinCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7w6c1")
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

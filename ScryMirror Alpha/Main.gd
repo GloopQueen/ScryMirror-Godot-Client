@@ -1,15 +1,17 @@
 extends Node
 
+@export var custom_scry_server: String
 @export var mob_scene: PackedScene
 @export var event_scene1: PackedScene
 @export var event_scene2: PackedScene
+@export var event_scene3: PackedScene
 
-@export var custom_scry_server: String
+
 
 
 var score = 0
 var damage = 0
-
+var scoreBooster = 0 #used to add some graze oomph for short interactions so doing the right thing quickly is rewarding
 
 var data_burp = "_"
 
@@ -72,6 +74,7 @@ func _on_mob_timer_timeout():
 func _on_hud_spawn_interaction(num,seconds,is_player_there):
 	score = 0
 	damage = 0
+	scoreBooster = 0
 	if is_player_there == true:
 		$Avatar.start($StartPosition.position)
 	var mob
@@ -79,12 +82,16 @@ func _on_hud_spawn_interaction(num,seconds,is_player_there):
 		mob = event_scene1.instantiate()
 	if num == 2:
 		mob = event_scene2.instantiate()
+	if num == 3:
+		mob = event_scene3.instantiate()
+		scoreBooster = 1
 	add_child(mob)
 
 
 # the exit block party
 func end_this_interaction():
 	print("End this interaction has been called")
+	$PostPhaseCleanupTimer.start()
 	$HUD.report_results(score,damage)
 
 
@@ -99,5 +106,5 @@ func _on_hud_reset_scores() -> void:
 
 
 func _on_avatar_gained_points(amount: Variant) -> void:
-	score = score + amount
+	score = score + (amount+scoreBooster)
 	$HUD.update_score(score)

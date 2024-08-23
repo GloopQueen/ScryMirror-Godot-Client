@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ca4imjno5h4hq"]
+[gd_scene load_steps=11 format=3 uid="uid://ca4imjno5h4hq"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_grd81"]
 [ext_resource type="PackedScene" uid="uid://bgi4qamg28yg0" path="res://player.tscn" id="1_sjvus"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bqm54qvbyc74p" path="res://attack_patterns/2_straight_shots.tscn" id="3_8seev"]
 [ext_resource type="PackedScene" uid="uid://b5chhwq1qwadp" path="res://attack_patterns/mob_sprayer.tscn" id="4_i80xy"]
 [ext_resource type="PackedScene" uid="uid://cpywq7senyjme" path="res://hud.tscn" id="4_ohf2t"]
+[ext_resource type="PackedScene" uid="uid://fdivvbnox1nq" path="res://attack_patterns/blackjack_game/blackjack_game.tscn" id="5_ce8iu"]
 [ext_resource type="Texture2D" uid="uid://c6lhp8wug7b31" path="res://art/constellations faint.png" id="7_fb5tp"]
 [ext_resource type="PackedScene" uid="uid://c1hjc115hog7o" path="res://avatar.tscn" id="8_pqmaa"]
 
@@ -20,6 +21,7 @@ script = ExtResource("1_grd81")
 mob_scene = ExtResource("2_vekqg")
 event_scene1 = ExtResource("3_8seev")
 event_scene2 = ExtResource("4_i80xy")
+event_scene3 = ExtResource("5_ce8iu")
 
 [node name="Player" parent="." instance=ExtResource("1_sjvus")]
 z_index = 1
@@ -46,6 +48,7 @@ rotation = 0.0147358
 [node name="HUD" parent="." instance=ExtResource("4_ohf2t")]
 
 [node name="Background" type="Sprite2D" parent="."]
+z_index = -2
 position = Vector2(240, 850)
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("7_fb5tp")
@@ -53,6 +56,10 @@ metadata/_edit_lock_ = true
 
 [node name="Avatar" parent="." instance=ExtResource("8_pqmaa")]
 position = Vector2(239, 491)
+
+[node name="PostPhaseCleanupTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
 
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
@@ -63,3 +70,4 @@ position = Vector2(239, 491)
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="gained_points" from="Avatar" to="." method="_on_avatar_gained_points"]
 [connection signal="took_damage" from="Avatar" to="." method="_on_avatar_took_damage"]
+[connection signal="timeout" from="PostPhaseCleanupTimer" to="Avatar" method="_on_post_phase_cleanup_timer_timeout"]

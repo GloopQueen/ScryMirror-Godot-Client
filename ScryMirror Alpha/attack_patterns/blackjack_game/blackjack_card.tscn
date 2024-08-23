@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfya2rw4l3kik"]
+
+[ext_resource type="Texture2D" uid="uid://c6gsi3oeu70a8" path="res://attack_patterns/blackjack_game/art/Card-A.png" id="1_76jyx"]
+[ext_resource type="Script" path="res://attack_patterns/blackjack_game/blackjack_card.gd" id="1_bfg1k"]
+
+[node name="blackjackCard" type="Node2D"]
+z_index = -1
+script = ExtResource("1_bfg1k")
+
+[node name="TheCardItself" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+
+[node name="CardSprite" type="Sprite2D" parent="TheCardItself"]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_76jyx")
+
+[node name="DampDelayTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="DampDelayTimer" to="." method="_on_damp_delay_timer_timeout"]

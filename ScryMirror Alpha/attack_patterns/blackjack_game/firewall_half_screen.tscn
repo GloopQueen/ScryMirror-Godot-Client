@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0j1dvkf6o0g8"]
+
+[ext_resource type="Texture2D" uid="uid://bfr4kn7f2xsj4" path="res://attack_patterns/blackjack_game/Firewall-pink.png" id="1_4x012"]
+[ext_resource type="Script" path="res://attack_patterns/blackjack_game/firewall_half_screen.gd" id="1_pmkj2"]
+[ext_resource type="Texture2D" uid="uid://dgxvmkd22vph0" path="res://attack_patterns/blackjack_game/Firewall-purple.png" id="2_vfx25"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8tuod"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_4x012")
+}],
+"loop": true,
+"name": &"pink",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_vfx25")
+}],
+"loop": true,
+"name": &"purple",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_41hsu"]
+size = Vector2(228, 10)
+
+[node name="firewallHalfScreen" type="RigidBody2D"]
+collision_mask = 0
+mass = 0.001
+gravity_scale = 0.0
+linear_velocity = Vector2(0, -350)
+script = ExtResource("1_pmkj2")
+
+[node name="firewallSprite" type="AnimatedSprite2D" parent="."]
+position = Vector2(120, 38)
+sprite_frames = SubResource("SpriteFrames_8tuod")
+animation = &"purple"
+
+[node name="fireCollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(119, 8)
+shape = SubResource("RectangleShape2D_41hsu")
+
+[node name="killTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="killTimer" to="." method="_on_kill_timer_timeout"]

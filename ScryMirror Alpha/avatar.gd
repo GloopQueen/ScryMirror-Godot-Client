@@ -7,9 +7,12 @@ var speed = 400
 var click_position = Vector2()
 var target_position = Vector2()
 var DidWeJustGetSmacked = false
+var ValueOfObjectsBeingGrazedRN = 0
 
 func _ready():
-	$GrazeRingAnimatedSprite.animation = "default"
+	$GrazeRingAnimatedSprite.hide()
+	$GrazeRingAnimatedSprite.animation = "NiceLilFlash"
+	$GrazeRingAnimatedSprite.play()
 	hide()
 	click_position = position
 
@@ -34,6 +37,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	print('fireball ouchie me bones')
 	$OuchNoise.play()
 	DidWeJustGetSmacked = true
+	ValueOfObjectsBeingGrazedRN = 0
 	took_damage.emit(1)
 	$Area2D.set_deferred("monitorable", false)
 	$Area2D.set_deferred("monitoring", false)
@@ -57,18 +61,45 @@ func _on_flashing_timer_timeout() -> void:
 
 
 func _on_graze_timer_timeout() -> void:
-	$GrazeRingAnimatedSprite.animation = "default"
-	$GrazeArea2D.set_deferred("monitorable",true)
-	$GrazeArea2D.set_deferred("monitoring",true)
+	if ValueOfObjectsBeingGrazedRN > 0 :
+		$GrazeRingAnimatedSprite.show()
+		$GrazeNoise.play()
+		gained_points.emit(1)
+	if ValueOfObjectsBeingGrazedRN >= 2:
+		$GrazeTimer.wait_time = 0.06
+	else:
+		$GrazeTimer.wait_time = 0.12
+	
+	if ValueOfObjectsBeingGrazedRN <= 0:
+		$GrazeRingAnimatedSprite.hide()
+	
+	#$GrazeArea2D.set_deferred("monitorable",true)
+	#$GrazeArea2D.set_deferred("monitoring",true)
 
 
 func _on_graze_area_2d_body_entered(body: Node2D) -> void:
+	count_grazeable_items()
 	if DidWeJustGetSmacked == false:
 		$GrazeNoise.play()
-		$GrazeRingAnimatedSprite.animation = "NiceLilFlash"
-		$GrazeRingAnimatedSprite.play()
 		print("yay a graze point")
-		gained_points.emit(1)
-		$GrazeTimer.start()
-		$GrazeArea2D.set_deferred("monitorable",false)
-		$GrazeArea2D.set_deferred("monitoring",false)
+
+
+		#$GrazeArea2D.set_deferred("monitorable",false)
+		#$GrazeArea2D.set_deferred("monitoring",false)
+
+
+func _on_graze_area_2d_body_exited(body: Node2D) -> void:
+	count_grazeable_items()
+
+
+func count_grazeable_items():
+	if DidWeJustGetSmacked == false:
+		var objects = $GrazeArea2D.get_overlapping_bodies()
+		ValueOfObjectsBeingGrazedRN = objects.size()
+		print("value of objects grazed rn:" + str(ValueOfObjectsBeingGrazedRN))
+
+
+# If we destroy projectiles etc, they don't "exit" collision. So there's a delay clock to help mop things up just in case.
+func _on_post_phase_cleanup_timer_timeout() -> void:
+	DidWeJustGetSmacked = false
+	ValueOfObjectsBeingGrazedRN = 0

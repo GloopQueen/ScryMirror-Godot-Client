@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://fdivvbnox1nq"]
+
+[ext_resource type="Script" path="res://attack_patterns/blackjack_game/blackjack_game.gd" id="1_1effa"]
+[ext_resource type="PackedScene" uid="uid://bfya2rw4l3kik" path="res://attack_patterns/blackjack_game/blackjack_card.tscn" id="1_lcbwj"]
+[ext_resource type="FontFile" uid="uid://dyytt1gjmcsoo" path="res://fonts/Cholvine.ttf" id="3_4sciw"]
+[ext_resource type="PackedScene" uid="uid://cs0hwbk6716c1" path="res://coin.tscn" id="4_b0bn7"]
+[ext_resource type="PackedScene" uid="uid://c0j1dvkf6o0g8" path="res://attack_patterns/blackjack_game/firewall_half_screen.tscn" id="4_xfh7i"]
+[ext_resource type="PackedScene" uid="uid://qocfb8yadwor" path="res://mob-skinny-no-graze.tscn" id="5_sfldy"]
+
+[node name="BlackjackGame" type="Node"]
+script = ExtResource("1_1effa")
+cardScene = ExtResource("1_lcbwj")
+firewallScene = ExtResource("4_xfh7i")
+coinScene = ExtResource("4_b0bn7")
+skinnyLaserScene = ExtResource("5_sfldy")
+
+[node name="CardSpitterLeft" type="Marker2D" parent="."]
+position = Vector2(120, 950)
+
+[node name="CardSpitterRight" type="Marker2D" parent="."]
+position = Vector2(360, 950)
+
+[node name="CardSpawnTimer" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[node name="LeftCountLabel" type="Label" parent="."]
+offset_left = 82.0
+offset_top = 46.0
+offset_right = 158.0
+offset_bottom = 153.0
+theme_override_fonts/font = ExtResource("3_4sciw")
+theme_override_font_sizes/font_size = 70
+text = "0"
+horizontal_alignment = 1
+
+[node name="RightCountLabel" type="Label" parent="."]
+offset_left = 322.0
+offset_top = 46.0
+offset_right = 398.0
+offset_bottom = 153.0
+theme_override_fonts/font = ExtResource("3_4sciw")
+theme_override_font_sizes/font_size = 70
+text = "0"
+horizontal_alignment = 1
+
+[node name="VictoryInfoLabel" type="Label" parent="."]
+offset_left = 97.0
+offset_top = 1.0
+offset_right = 379.0
+offset_bottom = 108.0
+theme_override_fonts/font = ExtResource("3_4sciw")
+theme_override_font_sizes/font_size = 47
+horizontal_alignment = 1
+
+[node name="UpdateAndCheckForVictoryTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="firewallSpawnpointL" type="Marker2D" parent="."]
+position = Vector2(0, 720)
+
+[node name="firewallSpawnpointR" type="Marker2D" parent="."]
+position = Vector2(240, 720)
+
+[node name="CoinSpawnpointL" type="Marker2D" parent="."]
+
+[node name="CoinSpawnpointR" type="Marker2D" parent="."]
+position = Vector2(240, 0)
+
+[node name="firewallSpawnTimer" type="Timer" parent="."]
+wait_time = 0.75
+
+[node name="coinSpawnTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="skinnyLaserTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="ApocalypseClock" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="CardSpawnTimer" to="." method="_on_card_spawn_timer_timeout"]
+[connection signal="timeout" from="UpdateAndCheckForVictoryTimer" to="." method="_on_update_and_check_for_victory_timer_timeout"]
+[connection signal="timeout" from="firewallSpawnTimer" to="." method="_on_firewall_spawn_timer_timeout"]
+[connection signal="timeout" from="coinSpawnTimer" to="." method="_on_coin_spawn_timer_timeout"]
+[connection signal="timeout" from="skinnyLaserTimer" to="." method="_on_skinny_laser_timer_timeout"]
+[connection signal="timeout" from="ApocalypseClock" to="." method="_on_apocalypse_clock_timeout"]
