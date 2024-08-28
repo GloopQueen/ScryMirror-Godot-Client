@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cpywq7senyjme"]
+[gd_scene load_steps=9 format=3 uid="uid://cpywq7senyjme"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_k64cc"]
 [ext_resource type="FontFile" uid="uid://300orjnaldub" path="res://fonts/Xolonium-Regular.ttf" id="2_2fhp3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://t0qv25kqhmol" path="res://art/ScryMirror_Logo.png" id="4_dnixi"]
 [ext_resource type="AudioStream" uid="uid://2g2di7r3npa7" path="res://sounds/plane_ding.ogg" id="5_v52rf"]
 [ext_resource type="FontFile" uid="uid://svibhget44bt" path="res://fonts/AnekDevanagari-VariableFont_wdth,wght.ttf" id="6_fdhaa"]
+[ext_resource type="Theme" uid="uid://clxvc62b6rnod" path="res://hud.tres" id="7_8eltl"]
 
 [sub_resource type="Theme" id="Theme_xbd80"]
 Button/font_sizes/font_size = 28
@@ -103,6 +104,20 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(0, 0.411765, 0.686275, 1)
 theme_override_font_sizes/font_size = 12
 text = "Responses From Server Will Appear Here."
+
+[node name="PollingStatusLabel" type="Label" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -53.0
+offset_right = 413.0
+offset_bottom = -30.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0.411765, 0.686275, 1)
+theme_override_font_sizes/font_size = 12
+text = "Polling Has Not Started.
+"
 
 [node name="VersionLabel" type="Label" parent="."]
 anchors_preset = 3
@@ -207,8 +222,101 @@ text = "  Connect & Begin  "
 
 [node name="HTTPResultsReporter" type="HTTPRequest" parent="."]
 
+[node name="voteSection" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 478.0
+offset_bottom = 598.0
+
+[node name="voteList" type="ItemList" parent="voteSection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -207.0
+offset_top = -191.0
+offset_right = 210.0
+offset_bottom = 11.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_8eltl")
+auto_height = true
+item_count = 4
+item_0/text = "--Getting Voice Choice 1--"
+item_1/text = "--Getting Voice Choice 2--"
+item_2/text = "--Getting Voice Choice 3--"
+item_3/text = "--Getting Voice Choice 4--"
+
+[node name="voteSubmitButton" type="Button" parent="voteSection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 110.0
+offset_right = 96.0
+offset_bottom = 158.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_8eltl")
+text = "Send Vote Choice"
+
+[node name="VoteTimeBar" type="ProgressBar" parent="voteSection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -207.0
+offset_top = -225.0
+offset_right = 209.0
+offset_bottom = -198.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("7_8eltl")
+max_value = 40.0
+value = 40.0
+show_percentage = false
+
+[node name="VoteCountdownTimer" type="Timer" parent="voteSection"]
+wait_time = 0.5
+
+[node name="VoteDismissTimer" type="Timer" parent="voteSection"]
+wait_time = 4.0
+one_shot = true
+
+[node name="VoteInfoLabel" type="Label" parent="voteSection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -157.0
+offset_top = 22.0
+offset_right = 157.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "-- Server Info About Vote Will Appear Here --"
+horizontal_alignment = 1
+
+[node name="HTTPVoteGetter" type="HTTPRequest" parent="voteSection"]
+
+[node name="HTTPBallotSender" type="HTTPRequest" parent="voteSection"]
+
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
 [connection signal="timeout" from="WebPoller" to="." method="_on_web_poller_timeout"]
 [connection signal="timeout" from="IncomingActionTimer" to="." method="_on_incoming_action_timer_timeout"]
 [connection signal="pressed" from="ServerConnectButton" to="." method="_on_server_connect_button_pressed"]
+[connection signal="item_selected" from="voteSection/voteList" to="." method="_on_vote_list_item_selected"]
+[connection signal="pressed" from="voteSection/voteSubmitButton" to="." method="_on_vote_submit_button_pressed"]
+[connection signal="timeout" from="voteSection/VoteCountdownTimer" to="." method="_on_vote_countdown_timer_timeout"]
+[connection signal="timeout" from="voteSection/VoteDismissTimer" to="." method="_on_vote_dismiss_timer_timeout"]

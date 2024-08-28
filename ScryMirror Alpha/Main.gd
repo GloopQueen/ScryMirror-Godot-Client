@@ -1,11 +1,14 @@
 extends Node
 
 @export var custom_scry_server: String
-@export var mob_scene: PackedScene
+@export var enable_controller_mode: bool
+
 @export var event_scene1: PackedScene
 @export var event_scene2: PackedScene
 @export var event_scene3: PackedScene
 
+#probably trash at this point need to clean up old code
+@export var mob_scene: PackedScene
 
 
 
@@ -17,7 +20,11 @@ var data_burp = "_"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
 	$HUD.set_scy_server_url(custom_scry_server)
+	if enable_controller_mode == true:
+		$EnableShowControlButton.show()
+		$showController.set_scy_server_url(custom_scry_server)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -108,3 +115,10 @@ func _on_hud_reset_scores() -> void:
 func _on_avatar_gained_points(amount: Variant) -> void:
 	score = score + (amount+scoreBooster)
 	$HUD.update_score(score)
+
+
+func _on_enable_show_control_button_pressed() -> void:
+	$HUD.hide()
+	$EnableShowControlButton.hide()
+	$Background.hide()
+	$showController.show()

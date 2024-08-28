@@ -31,6 +31,10 @@ func start(pos):
 	click_position = pos 
 	show()
 	$Area2D.set_deferred("monitoring",true)
+	
+func vanish_in_a_puff():
+	#still needs the vanish ina  puff animation lol
+	hide()
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:

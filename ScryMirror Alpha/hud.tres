@@ -1,0 +1,59 @@
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://clxvc62b6rnod"]
+
+[ext_resource type="FontFile" uid="uid://svibhget44bt" path="res://fonts/AnekDevanagari-VariableFont_wdth,wght.ttf" id="1_2u31v"]
+[ext_resource type="FontFile" uid="uid://dyytt1gjmcsoo" path="res://fonts/Cholvine.ttf" id="2_u4xpl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3xli1"]
+bg_color = Color(0.392157, 0.0980392, 0.584314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sa0g1"]
+content_margin_left = 7.0
+bg_color = Color(0.277775, 0.118812, 0.382168, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.882353, 0.0980392, 0.584314, 1)
+border_blend = true
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rifnc"]
+bg_color = Color(0.882353, 0.0980392, 0.584314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4j37"]
+bg_color = Color(0.882353, 0.0980392, 0.584314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a7wt5"]
+bg_color = Color(0.058491, 0.203422, 0.189873, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_psi6q"]
+bg_color = Color(0.890196, 0.129412, 0.831373, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+Button/font_sizes/font_size = 23
+Button/fonts/font = ExtResource("1_2u31v")
+Button/styles/normal = null
+ItemList/colors/font_color = Color(0.750976, 0.758488, 0.999999, 1)
+ItemList/constants/v_separation = 11
+ItemList/font_sizes/font_size = 21
+ItemList/fonts/font = ExtResource("1_2u31v")
+ItemList/styles/hovered = SubResource("StyleBoxFlat_3xli1")
+ItemList/styles/panel = SubResource("StyleBoxFlat_sa0g1")
+ItemList/styles/selected = SubResource("StyleBoxFlat_rifnc")
+ItemList/styles/selected_focus = SubResource("StyleBoxFlat_x4j37")
+Label/font_sizes/font_size = 55
+Label/fonts/font = ExtResource("2_u4xpl")
+ProgressBar/styles/background = SubResource("StyleBoxFlat_a7wt5")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_psi6q")

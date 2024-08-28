@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ca4imjno5h4hq"]
+[gd_scene load_steps=12 format=3 uid="uid://ca4imjno5h4hq"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_grd81"]
 [ext_resource type="PackedScene" uid="uid://bgi4qamg28yg0" path="res://player.tscn" id="1_sjvus"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://fdivvbnox1nq" path="res://attack_patterns/blackjack_game/blackjack_game.tscn" id="5_ce8iu"]
 [ext_resource type="Texture2D" uid="uid://c6lhp8wug7b31" path="res://art/constellations faint.png" id="7_fb5tp"]
 [ext_resource type="PackedScene" uid="uid://c1hjc115hog7o" path="res://avatar.tscn" id="8_pqmaa"]
+[ext_resource type="PackedScene" uid="uid://dsyn6vhleapg5" path="res://show_control_tools/show_controller.tscn" id="10_l0vpr"]
 
 [sub_resource type="Curve2D" id="Curve2D_5c63h"]
 _data = {
@@ -18,10 +19,10 @@ point_count = 5
 
 [node name="Main" type="Node"]
 script = ExtResource("1_grd81")
-mob_scene = ExtResource("2_vekqg")
 event_scene1 = ExtResource("3_8seev")
 event_scene2 = ExtResource("4_i80xy")
 event_scene3 = ExtResource("5_ce8iu")
+mob_scene = ExtResource("2_vekqg")
 
 [node name="Player" parent="." instance=ExtResource("1_sjvus")]
 z_index = 1
@@ -61,6 +62,26 @@ position = Vector2(239, 491)
 wait_time = 0.25
 one_shot = true
 
+[node name="EnableShowControlButton" type="Button" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -81.0
+offset_top = -288.0
+offset_right = 81.0
+offset_bottom = -234.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Run In Show 
+Controller Mode"
+
+[node name="showController" parent="." instance=ExtResource("10_l0vpr")]
+layer = -1
+visible = false
+
 [connection signal="hit" from="Player" to="." method="game_over"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
@@ -71,3 +92,4 @@ one_shot = true
 [connection signal="gained_points" from="Avatar" to="." method="_on_avatar_gained_points"]
 [connection signal="took_damage" from="Avatar" to="." method="_on_avatar_took_damage"]
 [connection signal="timeout" from="PostPhaseCleanupTimer" to="Avatar" method="_on_post_phase_cleanup_timer_timeout"]
+[connection signal="pressed" from="EnableShowControlButton" to="." method="_on_enable_show_control_button_pressed"]
