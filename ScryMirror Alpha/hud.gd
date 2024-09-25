@@ -11,7 +11,7 @@ signal reset_scores
 var currrentEpoch = 0
 var currentPage = 0
 var currentSeconds = 0
-var currentAttackId = 0
+var currentPhaseId = 0
 var isServerPollerBusy = false 
 var scryServerURL
 var shouldWeBePollingRNGlobal = false
@@ -29,7 +29,7 @@ func _ready():
 func _process(delta):
 	pass
 
-func set_scy_server_url(a):
+func set_scry_server_url(a):
 	if a.is_empty():
 		scryServerURL = "https://scry-mirror.vercel.app/api/"
 	else:
@@ -98,12 +98,12 @@ func _on_request_completed(result, response_code, headers, body):
 	#print(json)
 	
 	#Check If attack is valid (new ID, doesn't look like server just rebooted)
-	if currentAttackId != json["currentAttackId"] && json["currentAttackId"] != -1:
+	if currentPhaseId != json["currentPhaseId"] && json["currentPhaseId"] != -1:
 		currrentEpoch = json["currentEpochStamp"]
 		currentPage = json["thePage"]
 		currentSeconds = json["currentSeconds"]
-		currentAttackId = json["currentAttackId"]
-		infoString = "Page:"+str(currentPage)+" Epoch:"+str(currrentEpoch)+" Delay:"+str(currentSeconds)+" AttackID:"+str(currentAttackId)
+		currentPhaseId = json["currentPhaseId"]
+		infoString = "Page:"+str(currentPage)+" Epoch:"+str(currrentEpoch)+" Delay:"+str(currentSeconds)+" PhaseID:"+str(currentPhaseId)
 		show_epoch(infoString)
 	
 	# Check if attack is actually an attack, and if so, set up for that
@@ -132,7 +132,7 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	
 	# Whine if the server just rebooted
-	if json["currentAttackId"] == -1:
+	if json["currentPhaseId"] == -1:
 		$FeedbackFromServerLabel.text = "Attack ID was -1, ignoring."
 	#$EpochLabel.text = str(json["currentEpochStamp"])
 	#var json = JSON.parse_string(body.get_string_from_utf8())
@@ -153,7 +153,7 @@ func report_results(score,damage):
 	#damage = 20
 	#score = 21
 	should_we_be_polling_rn(true) #restarts polling
-	var urlstring = scryServerURL + "clientresults/" + str(currentAttackId) + "/" + str(damage) + "/" + str(score)
+	var urlstring = scryServerURL + "clientresults/" + str(currentPhaseId) + "/" + str(damage) + "/" + str(score)
 	print("Pinging: " + urlstring)
 	$HTTPResultsReporter.request(urlstring)
 
@@ -226,7 +226,7 @@ func send_ballot():
 	$voteSection/voteSubmitButton.disabled = true
 	$voteSection/voteList.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var jsonPacket = {
-		"attackid": currentAttackId,
+		"phaseid": currentPhaseId,
 		"voteResponse": voteChoice
 	}
 	var jsonBurp = JSON.new().stringify(jsonPacket)

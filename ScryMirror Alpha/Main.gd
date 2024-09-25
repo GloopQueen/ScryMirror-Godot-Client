@@ -21,10 +21,10 @@ var data_burp = "_"
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	$HUD.set_scy_server_url(custom_scry_server)
+	$HUD.set_scry_server_url(custom_scry_server)
 	if enable_controller_mode == true:
 		$EnableShowControlButton.show()
-		$showController.set_scy_server_url(custom_scry_server)
+		$showController.set_scry_server_url(custom_scry_server)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
