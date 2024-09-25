@@ -17,7 +17,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func set_scy_server_url(a):
+func set_scry_server_url(a):
 	if a.is_empty():
 		scryServerURL = "https://scry-mirror.vercel.app/api/"
 	else:
